@@ -1,0 +1,37 @@
+/* ===== Tablet ===== */
+@media (max-width: 1024px) {
+  :root { --sidebar-w: 220px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .settings-grid { grid-template-columns: 1fr; }
+  .navbar .search-wrapper { min-width: 180px; }
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 720px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar {
+    position: fixed; left: 0; top: 0; bottom: 0;
+    width: 270px; transform: translateX(-100%);
+    box-shadow: var(--shadow-lg);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .hamburger { display: flex; }
+  .navbar { padding: 0 1rem; }
+  .navbar-left h2 { font-size: 1.05rem; }
+  .navbar .search-wrapper { display: none; }
+  .content { padding: 1rem; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .toolbar { flex-direction: column; align-items: stretch; }
+  .toolbar .btn { width: 100%; }
+  .navbar-right .icon-btn:not(.theme-toggle) { display: none; }
+  .courses-grid { grid-template-columns: 1fr; }
+  .modal-card { padding: 1.25rem; }
+  .scroll-top { bottom: 1rem; left: 1rem; width: 40px; height: 40px; }
+  .toast-stack { right: 1rem; left: 1rem; bottom: 1rem; }
+  .toast { min-width: 0; }
+}
+
+@media (max-width: 420px) {
+  .navbar-right .avatar { display: none; }
+  .stat-card h3 { font-size: 1.4rem; }
+}
