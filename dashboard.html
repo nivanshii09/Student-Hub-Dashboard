@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduPanel — Student Management Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/dashboard.css" />
+  <link rel="stylesheet" href="/dashboard-responsive.css" />
+</head>
+<body>
+  <!-- Loading screen -->
+  <div id="loader" class="loader">
+    <div class="loader-ring"></div>
+    <p>Loading EduPanel…</p>
+  </div>
+
+  <div class="app" id="app" hidden>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" aria-label="Primary navigation">
+      <div class="sidebar-brand">
+        <div class="brand-logo">E</div>
+        <div>
+          <h1>EduPanel</h1>
+          <span>Admin Console</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-page="dashboard"><span class="icon">📊</span> Dashboard</button>
+        <button class="nav-item" data-page="students"><span class="icon">🎓</span> Students</button>
+        <button class="nav-item" data-page="courses"><span class="icon">📚</span> Courses</button>
+        <button class="nav-item" data-page="attendance"><span class="icon">📝</span> Attendance</button>
+        <button class="nav-item" data-page="settings"><span class="icon">⚙️</span> Settings</button>
+        <button class="nav-item" id="logoutBtn"><span class="icon">🚪</span> Logout</button>
+      </nav>
+      <div class="sidebar-footer">
+        <p>v1.0 · © 2026 EduPanel</p>
+      </div>
+    </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Main -->
+    <div class="main">
+      <!-- Top navbar -->
+      <header class="navbar">
+        <div class="navbar-left">
+          <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+          </button>
+          <h2 id="pageTitle">Dashboard</h2>
+        </div>
+        <div class="navbar-right">
+          <div class="search-wrapper">
+            <span class="search-ico">🔍</span>
+            <input type="search" id="globalSearch" placeholder="Search students, courses…" />
+          </div>
+          <button class="icon-btn" id="notifBtn" aria-label="Notifications">
+            🔔<span class="badge">3</span>
+          </button>
+          <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+          <div class="avatar" title="Admin User">AU</div>
+        </div>
+      </header>
+
+      <main class="content">
+        <!-- DASHBOARD PAGE -->
+        <section class="page active" id="page-dashboard">
+          <div class="stats-grid">
+            <div class="stat-card fade-in">
+              <div class="stat-icon" style="--c:#3B82F6">🎓</div>
+              <div>
+                <p class="stat-label">Total Students</p>
+                <h3 id="statStudents">0</h3>
+                <span class="stat-trend up">+12% this month</span>
+              </div>
+            </div>
+            <div class="stat-card fade-in" style="animation-delay:.08s">
+              <div class="stat-icon" style="--c:#22C55E">📚</div>
+              <div>
+                <p class="stat-label">Total Courses</p>
+                <h3 id="statCourses">0</h3>
+                <span class="stat-trend up">+2 new</span>
+              </div>
+            </div>
+            <div class="stat-card fade-in" style="animation-delay:.16s">
+              <div class="stat-icon" style="--c:#F59E0B">📈</div>
+              <div>
+                <p class="stat-label">Avg Attendance</p>
+                <h3 id="statAttendance">0%</h3>
+                <span class="stat-trend up">Stable</span>
+              </div>
+            </div>
+            <div class="stat-card fade-in" style="animation-delay:.24s">
+              <div class="stat-icon" style="--c:#EF4444">✅</div>
+              <div>
+                <p class="stat-label">Active Students</p>
+                <h3 id="statActive">0</h3>
+                <span class="stat-trend up">Healthy</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel fade-in" style="animation-delay:.3s">
+            <div class="panel-head">
+              <h3>Recent Students</h3>
+              <button class="btn-link" data-page-link="students">View all →</button>
+            </div>
+            <div id="recentList" class="recent-list"></div>
+          </div>
+        </section>
+
+        <!-- STUDENTS PAGE -->
+        <section class="page" id="page-students">
+          <div class="toolbar">
+            <div class="search-wrapper grow">
+              <span class="search-ico">🔍</span>
+              <input type="search" id="studentSearch" placeholder="Search by name or course…" />
+            </div>
+            <button class="btn btn-primary" id="addStudentBtn">+ Add Student</button>
+          </div>
+
+          <div class="panel">
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Student Name</th>
+                    <th>Course</th>
+                    <th>Attendance</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="studentsTbody"></tbody>
+              </table>
+              <div class="empty-state" id="emptyStudents" hidden>
+                <div class="empty-emoji">🗂️</div>
+                <h3>No students yet</h3>
+                <p>Add your first student to get started.</p>
+                <button class="btn btn-primary" onclick="document.getElementById('addStudentBtn').click()">+ Add Student</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- COURSES -->
+        <section class="page" id="page-courses">
+          <div class="courses-grid" id="coursesGrid"></div>
+        </section>
+
+        <!-- ATTENDANCE -->
+        <section class="page" id="page-attendance">
+          <div class="panel">
+            <div class="panel-head">
+              <h3>Student Attendance</h3>
+              <span class="muted" id="attendanceCount"></span>
+            </div>
+            <div id="attendanceList" class="attendance-list"></div>
+          </div>
+        </section>
+
+        <!-- SETTINGS -->
+        <section class="page" id="page-settings">
+          <div class="settings-grid">
+            <div class="panel profile-card">
+              <div class="avatar large">AU</div>
+              <h3>Admin User</h3>
+              <p class="muted">admin@edupanel.com</p>
+              <button class="btn btn-ghost">Edit Profile</button>
+            </div>
+            <div class="panel">
+              <h3>Preferences</h3>
+              <div class="setting-row">
+                <div>
+                  <p>Dark Mode</p>
+                  <small class="muted">Switch between light and dark themes</small>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="darkModeSwitch" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <div class="setting-row">
+                <div>
+                  <p>Notifications</p>
+                  <small class="muted">Receive in-app alerts</small>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="notifSwitch" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <div class="setting-row">
+                <div>
+                  <p>Language</p>
+                  <small class="muted">Interface language</small>
+                </div>
+                <select class="select" id="langSelect">
+                  <option>English</option>
+                  <option>Hindi</option>
+                  <option>Spanish</option>
+                  <option>French</option>
+                  <option>German</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>Made with ♥ by EduPanel · Polished admin experience for modern campuses.</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="studentModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <h3 id="modalTitle">Add Student</h3>
+        <button class="icon-btn" data-close aria-label="Close">✕</button>
+      </div>
+      <form id="studentForm" novalidate>
+        <input type="hidden" id="studentId" />
+        <div class="form-row">
+          <label>Student Name</label>
+          <input type="text" id="fName" placeholder="e.g. Rahul Sharma" />
+          <small class="error" data-for="fName"></small>
+        </div>
+        <div class="form-row">
+          <label>Course</label>
+          <select id="fCourse">
+            <option value="">Select course…</option>
+            <option>BCA</option><option>B.Tech</option><option>MCA</option>
+            <option>MBA</option><option>B.Sc</option><option>M.Tech</option>
+          </select>
+          <small class="error" data-for="fCourse"></small>
+        </div>
+        <div class="form-row">
+          <label>Attendance (%)</label>
+          <input type="number" id="fAttendance" min="0" max="100" placeholder="0–100" />
+          <small class="error" data-for="fAttendance"></small>
+        </div>
+        <div class="form-row">
+          <label>Status</label>
+          <select id="fStatus">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-stack" id="toastStack"></div>
+
+  <!-- Scroll to top -->
+  <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
+
+  <script src="/dashboard.js"></script>
+</body>
+</html>
